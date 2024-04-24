@@ -24,7 +24,7 @@ void setup() {
   myPID.SetSampleTime(1);
   myPID.SetOutputLimits(-255, 255);
   
-  Wire.begin(8);                // join i2c bus with address #8 for Right Motor
+  Wire.begin(9);                // join i2c bus with address #9 for Right Motor
   Wire.onRequest(requestEvent); // register events
   Wire.onReceive(receiveEvent);
   //Serial.begin (9600); 
@@ -48,18 +48,18 @@ void loop() {
 
 void pwmOut(int out) {                                // to H-Bridge board
   if (out > 0) {
-    analogWrite(M1, out);                             // drive motor CW
-    analogWrite(M2, 0);
+    analogWrite(M1, 0);                             // drive motor CW
+    analogWrite(M2, out);
   }
   else {
-    analogWrite(M1, 0);
-    analogWrite(M2, abs(out));                        // drive motor CCW
+    analogWrite(M1, abs(out));
+    analogWrite(M2, 0);                        // drive motor CCW
   }
 }
 
 void encoder()  {                                     // pulse and direction, direct port reading to save cycles  
-  if (PINB & 0b00000001)    encoderPos--;             // if(digitalRead(encodPinB1)==HIGH)   count --;
-  else                      encoderPos++;             // if(digitalRead(encodPinB1)==LOW)   count ++;
+  if (PINB & 0b00000001)    encoderPos++;             // if(digitalRead(encodPinB1)==HIGH)   count ++;
+  else                      encoderPos--;             // if(digitalRead(encodPinB1)==LOW)   count --;
 }
 
 void requestEvent() {
